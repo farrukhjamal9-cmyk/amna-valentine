@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>For Amna ❤️</title>
+
   <style>
     body {
       margin: 0;
@@ -50,12 +51,14 @@
     }
     #yesBtn { background: #ff6b81; color: white; }
     #noBtn { background: #ff4757; color: white; }
+
     .heart {
       position: absolute;
       color: rgba(255,255,255,0.7);
       font-size: 18px;
       animation: floatUp 6s linear infinite;
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(0.9); }
       to { opacity: 1; transform: scale(1); }
@@ -66,9 +69,10 @@
       100% { transform: scale(1); }
     }
     @keyframes floatUp {
-      from { transform: translateY(100vh) scale(0.8); opacity: 1; }
-      to { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+      from { transform: translateY(100vh); opacity: 1; }
+      to { transform: translateY(-10vh); opacity: 0; }
     }
+
     .firework {
       position: absolute;
       width: 5px;
@@ -78,40 +82,50 @@
       animation: explode 1s forwards;
     }
     @keyframes explode {
-      0% { transform: scale(1) translate(0,0); opacity:1; }
-      100% { transform: scale(0) translate(var(--x), var(--y)); opacity:0; }
+      to {
+        transform: translate(var(--x), var(--y));
+        opacity: 0;
+      }
     }
+
     .hidden { display: none; }
   </style>
 </head>
+
 <body>
 
+  <!-- 🎵 MUSIC -->
+  <audio id="bgMusic" loop>
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- PAGE 1 -->
   <div class="container" id="page1">
     <h1>Amna ❤️</h1>
     <p class="special-text">Just wanted you to know… you are my everything 🌸</p>
     <p class="question-text">Will you be my Valentine forever? 💖</p>
-    <div style="margin-top: 15px;">
-      <button id="yesBtn">YES 💕</button>
-      <button id="noBtn">NO 😅</button>
-    </div>
+    <button id="yesBtn">YES 💕</button>
+    <button id="noBtn">NO 😅</button>
   </div>
 
+  <!-- PAGE 2 -->
   <div class="container hidden" id="page2">
     <h1>I Love You ❤️</h1>
     <p class="special-text">14 Feb ko milo gi 💖</p>
-    <div style="margin-top: 15px;">
-      <button id="yesBtn2">YES 💕</button>
-      <button id="noBtn2">NO 😅</button>
-    </div>
+    <button id="yesBtn2">YES 💕</button>
+    <button id="noBtn2">NO 😅</button>
   </div>
 
+  <!-- LAST PAGE -->
   <div class="container hidden" id="messagePage">
-    <h1>❤️ My Sweet Amna ❤️</h1>
-    <p class="special-text">You are my heart, my happiness, and my Valentine forever! Can’t wait to see you on 14 Feb 😘💕</p>
+    <h1>❤️ My Sweet Heart ❤️</h1>
+    <p class="special-text">
+      You are my heart, my happiness, and my Valentine forever 💕  
+      Can’t wait to see you on 14 Feb 😘
+    </p>
   </div>
 
   <script>
-    // Floating hearts
     function createHeart() {
       const heart = document.createElement("div");
       heart.className = "heart";
@@ -119,77 +133,54 @@
       heart.style.left = Math.random() * 100 + "vw";
       heart.style.fontSize = (16 + Math.random() * 20) + "px";
       heart.style.animationDuration = (4 + Math.random() * 2) + "s";
-      heart.style.opacity = 0.5 + Math.random() * 0.5;
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 6000);
     }
     setInterval(createHeart, 400);
 
-    // PAGE 1 BUTTONS
+    const bgMusic = document.getElementById("bgMusic");
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
-
-    yesBtn.addEventListener("click", () => {
-      document.getElementById("page1").classList.add("hidden");
-      document.getElementById("page2").classList.remove("hidden");
-      launchFireworks(50);
-      spawnExtraHearts(50);
-    });
-
-    noBtn.addEventListener("click", () => {
-      noBtn.textContent = "INVALID OPTION ❤️";
-      noBtn.style.background = "#ff0000"; // Red color
-      noBtn.style.transform = "scale(1.1)";
-      setTimeout(()=>{ noBtn.style.transform = "scale(1)"; }, 300);
-    });
-
-    // PAGE 2 BUTTONS
     const yesBtn2 = document.getElementById("yesBtn2");
     const noBtn2 = document.getElementById("noBtn2");
 
-    noBtn2.addEventListener("mouseenter", () => moveNoButton(noBtn2));
-    noBtn2.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(noBtn2); });
-
-    yesBtn2.addEventListener("click", () => {
-      document.getElementById("page2").classList.add("hidden");
-      document.getElementById("messagePage").classList.remove("hidden");
-      launchFireworks(50);
-      spawnExtraHearts(50);
+    yesBtn.addEventListener("click", () => {
+      bgMusic.play();
+      page1.classList.add("hidden");
+      page2.classList.remove("hidden");
+      fireworks();
     });
 
-    // Function to move NO button on page2
-    function moveNoButton(btn) {
-      const messages = ["INVALID ❤️", "Try again 😅", "YES hi bolna hai 💖"];
-      btn.textContent = messages[Math.floor(Math.random() * messages.length)];
-      const maxX = window.innerWidth - btn.offsetWidth;
-      const maxY = window.innerHeight - btn.offsetHeight;
-      btn.style.position = "absolute";
-      btn.style.left = Math.random() * maxX + "px";
-      btn.style.top = Math.random() * maxY + "px";
-    }
+    yesBtn2.addEventListener("click", () => {
+      bgMusic.play();
+      page2.classList.add("hidden");
+      messagePage.classList.remove("hidden");
+      fireworks();
+    });
 
-    // Fireworks
-    function launchFireworks(count) {
-      for(let i=0;i<count;i++){
-        const fire = document.createElement("div");
-        fire.className = "firework";
-        fire.style.background = `hsl(${Math.random()*360}, 100%, 60%)`;
-        fire.style.left = Math.random() * window.innerWidth + "px";
-        fire.style.top = Math.random() * window.innerHeight + "px";
-        fire.style.setProperty("--x", (Math.random()*200-100)+"px");
-        fire.style.setProperty("--y", (Math.random()*200-100)+"px");
-        document.body.appendChild(fire);
-        setTimeout(()=>fire.remove(),1000);
+    noBtn.addEventListener("click", () => {
+      noBtn.innerText = "INVALID ❤️";
+    });
+
+    noBtn2.addEventListener("mouseenter", () => {
+      noBtn2.style.position = "absolute";
+      noBtn2.style.left = Math.random()*80 + "vw";
+      noBtn2.style.top = Math.random()*80 + "vh";
+    });
+
+    function fireworks() {
+      for(let i=0;i<40;i++){
+        const f = document.createElement("div");
+        f.className = "firework";
+        f.style.background = `hsl(${Math.random()*360},100%,60%)`;
+        f.style.left = Math.random()*100 + "vw";
+        f.style.top = Math.random()*100 + "vh";
+        f.style.setProperty("--x",(Math.random()*200-100)+"px");
+        f.style.setProperty("--y",(Math.random()*200-100)+"px");
+        document.body.appendChild(f);
+        setTimeout(()=>f.remove(),1000);
       }
     }
-
-    // Extra hearts
-    function spawnExtraHearts(count) {
-      for(let i=0;i<count;i++){
-        setTimeout(createHeart, i*80);
-      }
-    }
-
   </script>
 
 </body>
